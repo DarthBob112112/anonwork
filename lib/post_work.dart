@@ -14,6 +14,8 @@ class _PostScreenState extends State<PostScreen> {
   final TextEditingController _controller2 = TextEditingController(); //category
   final TextEditingController _controller3 =
       TextEditingController(); //delivery time
+  final TextEditingController _controller4 =
+      TextEditingController(); //delivery time
   @override
   void dispose() {
     _controller1.dispose();
@@ -65,6 +67,15 @@ class _PostScreenState extends State<PostScreen> {
               name: 'DAYS : HOURS : MINUTES : SECONDS',
               icon: Icon(Icons.punch_clock),
               controller: _controller3,
+            ),
+            const Text(
+              "What is your budget for this order?",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            ),
+            customTextField(
+              name: 'Amount in USD',
+              icon: Icon(Icons.attach_money),
+              controller: _controller4,
             ),
             ElevatedButton(
               onPressed: () {
