@@ -72,7 +72,7 @@ class _PostScreenState extends State<PostScreen> {
                 print('$x'); // ADD A ON PRESSED FUNCTION
               },
               child: const Text(
-                "Bruh",
+                "Post",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
