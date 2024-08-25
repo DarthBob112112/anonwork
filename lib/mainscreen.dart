@@ -1,7 +1,13 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:web3dart/web3dart.dart';
+
 import 'package:http/http.dart';
+import 'package:webthree/browser.dart';
+import 'package:webthree/webthree.dart';
+import 'package:webthree/json_rpc.dart';
+
 import 'test.g.dart';
 import 'env.dart';
 
@@ -19,7 +25,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
+  // var metamask = MetaMask();
   @override
   void initState() {
     httpClient = Client();
@@ -29,6 +35,13 @@ class _MainScreenState extends State<MainScreen> {
     // getTotalVotes();
     super.initState();
   }
+  late Ethereum eth;
+  late RpcService serv;
+  late Web3Client client;
+  late List<dynamic> credentials;
+  late Test contractAbi;
+  String contractAddress="0x04bd1B0A5f63e8523824c87d822e31CB20632228";
+
   Future<DeployedContract> getContract() async {
     // Obtain our smart contract using rootbundle to access our json file
     String abiFile = await rootBundle.loadString("test.abi.json");
@@ -38,45 +51,37 @@ class _MainScreenState extends State<MainScreen> {
 
     return contract;
   }
-  Future<List<dynamic>> callFunction(String name, List<dynamic> pars) async {
-    final contract = await getContract();
-    final function = contract.function(name);
-    final result = await ethClient
-        .call(contract: contract, function: function, params: pars);
-    return result;
-  }
-  Future<void> getString() async {
-    List<dynamic> resultsA = await callFunction("get",[]);
-    returned=resultsA[0];
-    print(returned);
-    setState(() {});
-  }
-  Future<void> setString() async {
-    List<dynamic> resultsA = await callFunction("set",["this is the string now"]);
-    // returned = resultsA[0];
-    print(resultsA);
-  }
+
   Future<void> getDiff() async {
-    String contractAddress="0x04bd1B0A5f63e8523824c87d822e31CB20632228";
-    var contractAbi = await Test(
-        address: EthereumAddress.fromHex(contractAddress), client: ethClient);
     var money = await contractAbi.get();
     print(money);
   }
   Future<void> updateDiff() async {
-    String contractAddress="0x04bd1B0A5f63e8523824c87d822e31CB20632228";
-    var contractAbi = await Test(
+    var money = await contractAbi.update("another one", credentials: credentials[0]);
+    print(money);
+  }
+  Future<void> init_meta() async{
+    eth=window.ethereum!;
+
+    serv=eth.asRpcService();
+    client = Web3Client.custom(serv);
+    credentials=await eth.requestAccounts();
+    contractAbi = await Test(
         address: EthereumAddress.fromHex(contractAddress), client: ethClient);
-    // var money = await contractAbi.update("args" as ({String new_str}), credentials: Credentials);
-    // print(money);
+  }
+  void metamask() async{
+    await init_meta();
+    print("this is $credentials, ${credentials.runtimeType.toString()} ${credentials[0].runtimeType.toString()}");
+    await getDiff();
+    await updateDiff();
+    await getDiff();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    // getString();
-    // setString().then((value) => getString());
-    // getString();
-    getDiff();
+    metamask();
+
     return const Placeholder();
   }
 }
