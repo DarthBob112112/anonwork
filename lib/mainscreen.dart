@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 import 'test.g.dart';
+import 'env.dart';
 
 late Client httpClient;
 late Web3Client ethClient;
-final String myAddress = "0xA2581Fe4dCf0E224A43CCe62fFBab566f80632fF";
-final String blockchainUrl = "https://rpc.open-campus-codex.gelato.digital/";
+
 String returned="";
 
 class MainScreen extends StatefulWidget {
@@ -67,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
     String contractAddress="0x04bd1B0A5f63e8523824c87d822e31CB20632228";
     var contractAbi = await Test(
         address: EthereumAddress.fromHex(contractAddress), client: ethClient);
-    // var money = await contractAbi.update(new_str:"the new string", credentials: credentials);
+    // var money = await contractAbi.update("args" as ({String new_str}), credentials: Credentials);
     // print(money);
   }
 
