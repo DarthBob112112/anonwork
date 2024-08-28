@@ -9,7 +9,7 @@ import 'package:webthree/webthree.dart';
 import 'package:webthree/json_rpc.dart';
 
 import 'test.g.dart';
-import 'env.dart';
+import 'envs.dart';
 
 late Client httpClient;
 late Web3Client ethClient;
@@ -45,7 +45,6 @@ class _MainScreenState extends State<MainScreen> {
   Future<DeployedContract> getContract() async {
     // Obtain our smart contract using rootbundle to access our json file
     String abiFile = await rootBundle.loadString("test.abi.json");
-    String contractAddress = "0x04bd1B0A5f63e8523824c87d822e31CB20632228";
     final contract = DeployedContract(ContractAbi.fromJson(abiFile, "WorkNet"),
         EthereumAddress.fromHex(contractAddress));
 
@@ -72,6 +71,7 @@ class _MainScreenState extends State<MainScreen> {
   void metamask() async{
     await init_meta();
     print("this is $credentials, ${credentials.runtimeType.toString()} ${credentials[0].runtimeType.toString()}");
+    print(contractAbi.chainId);
     await getDiff();
     await updateDiff();
     await getDiff();
