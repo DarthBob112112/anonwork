@@ -12,13 +12,21 @@ void addJob(List<List<String>> lis, String dscript, String category,
   lis.add([dscript, category, time, amount]);
 }
 
+List<String> j = ["fake ass job", "gaming", "2 days", "\$20"];
+
 class _ListingPageState extends State<ListingPage> {
   final List<List<String>> x = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListBody(
-        children: [for (int i = 0; i < x.length; i++) JobListCard(job: x[i])],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            JobListCard(job: j), //remove this later
+            //[for (int i = 0; i < x.length; i++) JobListCard(job: x[i])],
+          ],
+        ),
       ),
     );
   }
@@ -37,6 +45,10 @@ class JobListCard extends StatelessWidget {
           Text(job[1]),
           Text(job[2]),
           Text(job[3]),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text("Select Job"),
+          )
         ],
       ),
     );
