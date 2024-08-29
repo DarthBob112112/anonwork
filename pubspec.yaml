@@ -33,6 +33,7 @@ dependencies:
 #  web3dart: ^2.3.3
   webthree: 2.7.5
   http:
+  flutter_svg: ^2.0.4
 
   js:
 
@@ -65,8 +66,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/
-     - assets/images/fresh.jpg
+    - assets/images/
+    #- assets/images/fresh.jpg
+    #- assets/vectors/worknet.svg
+    #- assets/images/worknet-01.png
+    #- assets/images/bg.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -97,5 +101,9 @@ flutter:
     fonts:
     - asset : assets/fonts/JosefinSans-Italic-VariableFont_wght.ttf
     - asset : assets/fonts/JosefinSans-VariableFont_wght.ttf
+
+  - family: LeagueGothic
+    fonts: 
+    - asset : assets/fonts/LeagueGothic-Regular-VariableFont_wdth.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
