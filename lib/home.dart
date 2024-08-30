@@ -83,7 +83,8 @@ class HomePage extends StatelessWidget {
                     )
                   ],
                 ),
-              )
+              ),
+              Padding(padding: EdgeInsets.all(80.0))
             ],
           ),
         ),
