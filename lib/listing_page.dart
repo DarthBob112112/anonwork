@@ -15,20 +15,21 @@ void addJob(List<List<String>> lis, String dscript, String category,
   lis.add([dscript, category, time, amount]);
 }
 
-List<String> j = ["fake ass job", "gaming", "2 days", "\$20"];
+//List<String> j = ["fake ass job", "gaming", "2 days", "\$20"];
 
 class _ListingPageState extends State<ListingPage> {
   final List<List<String>> x = [];
-  List<Jobs> listings=[];
-  Future<void> doList() async{
+  List<Jobs> listings = [];
+  Future<void> doList() async {
     print("second");
-    listings=await getListings();
+    listings = await getListings();
     print("third");
     print(listings);
     print("fourth");
     setState(() {});
     print("fifth");
   }
+
   initState() {
     print("first");
     doList();
@@ -38,15 +39,36 @@ class _ListingPageState extends State<ListingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children:
-            // JobListCard(job: j), //remove this later
-            [
-              for (int i = 0; i < listings.length; i++) JobListCard(job: listings[i])
-            ],
-
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
+        ),
+        height: 1080.0,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children:
+                  // JobListCard(job: j), //remove this later
+                  [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BackButton(),
+                      Image.asset(
+                        'assets/images/workname.png',
+                      ),
+                    ],
+                  ),
+                ),
+                for (int i = 0; i < listings.length; i++)
+                  JobListCard(job: listings[i])
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -83,12 +105,13 @@ class JobListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     print("building");
     return Card(
+      color: Colors.transparent,
       child: Column(
         children: [
-          Text(job.desc),
-          Text(job.category),
-          Text(job.deadline),
-          Text(job.amount.toString()),
+          Text(job.desc, style: TextStyle(fontSize: 20.0)),
+          Text(job.category, style: TextStyle(fontSize: 20.0)),
+          Text(job.deadline, style: TextStyle(fontSize: 20.0)),
+          Text(job.amount.toString(), style: TextStyle(fontSize: 20.0)),
           ElevatedButton(
             onPressed: () {},
             child: const Text("Select Job"),
