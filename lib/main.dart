@@ -1,17 +1,17 @@
 // import 'package:anonwork/post_work.dart';
 import 'dart:js';
 
+import 'package:anonwork/funcs.dart';
 import 'package:flutter/material.dart';
 import 'post_work.dart';
-import 'mainscreen.dart';
 import 'home.dart';
-// import 'contract_funcs.dart';
-
+import 'listing_page.dart';
 final myApp = MaterialApp(
-  initialRoute: '/contract',
+  initialRoute: '/',
   routes: {
-    '/': (context) => PostScreen(),
-    '/contract': (context) => HomePage(),
+    '/': (context) => HomePage(),
+    '/post': (context) => PostScreen(),
+    '/listings': (context) => ListingPage(),
   },
   theme: ThemeData(
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -42,6 +42,8 @@ final myApp = MaterialApp(
   ),
 );
 
-void main() {
+void main() async{
+  await init_metamask();
+  // await init_firebase();
   runApp(myApp);
 }

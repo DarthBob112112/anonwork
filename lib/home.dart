@@ -74,11 +74,15 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/post');
+                      },
                       child: const Text("Looking to Hire?"),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/listings');
+                      },
                       child: const Text("Looking for Work?"),
                     )
                   ],

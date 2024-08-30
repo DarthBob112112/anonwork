@@ -1,3 +1,4 @@
+import 'package:anonwork/funcs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,19 +10,19 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
-  final TextEditingController _controller1 =
+  final TextEditingController _desc =
       TextEditingController(); //service description
-  final TextEditingController _controller2 = TextEditingController(); //category
-  final TextEditingController _controller3 =
+  final TextEditingController _category = TextEditingController(); //category
+  final TextEditingController _deadline =
       TextEditingController(); //delivery time
-  final TextEditingController _controller4 =
+  final TextEditingController _amt =
       TextEditingController(); //delivery time
   @override
   void dispose() {
-    _controller1.dispose();
-    _controller2.dispose();
-    _controller3.dispose();
-    _controller4.dispose();
+    _desc.dispose();
+    _category.dispose();
+    _deadline.dispose();
+    _amt.dispose();
 
     super.dispose();
   }
@@ -44,7 +45,7 @@ class _PostScreenState extends State<PostScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 200.0),
                 child:
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.home)),
+                    IconButton(onPressed: () {Navigator.popUntil(context, ModalRoute.withName('/'));}, icon: const Icon(Icons.home)),
               ), //no home navigation yet
               const Text(
                 "What service would you like?",
@@ -53,7 +54,7 @@ class _PostScreenState extends State<PostScreen> {
               CustomTextField(
                 name: 'Enter your service description',
                 icon: Icon(Icons.shop),
-                controller: _controller1,
+                controller: _desc,
               ),
               const Text(
                 "Enter a category : ",
@@ -65,7 +66,7 @@ class _PostScreenState extends State<PostScreen> {
               CustomTextField(
                 name: 'Category',
                 icon: Icon(Icons.check_box),
-                controller: _controller2,
+                controller: _category,
               ),
               const Text(
                 "What is your expected delivery time?",
@@ -74,7 +75,7 @@ class _PostScreenState extends State<PostScreen> {
               CustomTextField(
                 name: 'DAYS : HOURS : MINUTES : SECONDS',
                 icon: Icon(Icons.punch_clock),
-                controller: _controller3,
+                controller: _deadline,
               ),
               const Text(
                 "What is your budget for this order?",
@@ -83,12 +84,13 @@ class _PostScreenState extends State<PostScreen> {
               CustomTextField(
                 name: 'Amount in USD',
                 icon: Icon(Icons.attach_money),
-                controller: _controller4,
+                controller: _amt,
               ),
               ElevatedButton(
-                onPressed: () {
-                  String x = _controller1.text;
+                onPressed: () async{
+                  String x = _desc.text;
                   print('$x'); // ADD A ON PRESSED FUNCTION
+                  await postJob(_desc.text, _category.text, _deadline.text, int.parse(_amt.text)).then((val)=>Navigator.popUntil(context,ModalRoute.withName('/')));
                 },
                 child: const Text(
                   "Post",
