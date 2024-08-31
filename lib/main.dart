@@ -6,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'post_work.dart';
 import 'home.dart';
 import 'listing_page.dart';
+import 'job_page.dart';
+import 'profile.dart';
 final myApp = MaterialApp(
-  initialRoute: '/',
+  initialRoute: '/profile',
   routes: {
     '/': (context) => HomePage(),
     '/post': (context) => PostScreen(),
     '/listings': (context) => ListingPage(),
+    '/job': (context) => JobPage(),
+    '/profile': (context) => ProfilePage(),
   },
   theme: ThemeData(
     elevatedButtonTheme: ElevatedButtonThemeData(

@@ -58,14 +58,11 @@ void getPersonalJobs(){
   getWorkerJobs();
 }
 Future<Map<int,Jobs>> getListings() async{
-  print('inside1');
   Map<int,Jobs> listings={};
-  print("inside2");
   List<BigInt> temp= await contractAbi.getListing();
   for (BigInt jobId in temp){
     listings[jobId.toInt()]=(Jobs(await contractAbi.getJob(jobId)));
   }
-  print(listings);
   return listings;
 }
 

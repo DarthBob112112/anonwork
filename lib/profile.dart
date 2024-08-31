@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'funcs.dart';
 import 'contract.g.dart';
 
-class ListingPage extends StatefulWidget {
-  const ListingPage({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<ListingPage> createState() => _ListingPageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
 void addJob(List<List<String>> lis, String dscript, String category,
@@ -17,12 +17,12 @@ void addJob(List<List<String>> lis, String dscript, String category,
 
 //List<String> j = ["fake ass job", "gaming", "2 days", "\$20"];
 
-class _ListingPageState extends State<ListingPage> {
+class _ProfilePageState extends State<ProfilePage> {
   final List<List<String>> x = [];
-  Map<int,Jobs> listings={};
+  Map<int,Jobs> myJobs={};
   Future<void> doList() async{
-    listings=await getListings();
-    print(listings);
+    await getClientJobs();
+    print(clientJobs);
     setState(() {});
   }
 
@@ -45,8 +45,7 @@ class _ListingPageState extends State<ListingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children:
-                  // JobListCard(job: j), //remove this later
-                  [
+              [
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.0),
                   child: Row(
@@ -59,7 +58,7 @@ class _ListingPageState extends State<ListingPage> {
                     ],
                   ),
                 ),
-                for (MapEntry<int, Jobs> entry in listings.entries)
+                for (MapEntry<int, Jobs> entry in clientJobs.entries)
                   JobListCard(jobId: entry.key,job: entry.value)
               ],
             ),
@@ -70,28 +69,6 @@ class _ListingPageState extends State<ListingPage> {
   }
 }
 
-// class JobListCard extends StatelessWidget {
-//   final List<String> job;
-//   const JobListCard({super.key, required this.job});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       child: Column(
-//         children: [
-//           Text(job[0]),
-//           Text(job[1]),
-//           Text(job[2]),
-//           Text(job[3]),
-//           ElevatedButton(
-//             onPressed: () {},
-//             child: const Text("Select Job"),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
 class JobListCard extends StatelessWidget {
   final Jobs job;
   final int jobId;
