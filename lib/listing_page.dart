@@ -19,21 +19,16 @@ void addJob(List<List<String>> lis, String dscript, String category,
 
 class _ListingPageState extends State<ListingPage> {
   final List<List<String>> x = [];
-  List<Jobs> listings = [];
-  Future<void> doList() async {
-    print("second");
-    listings = await getListings();
-    print("third");
+  Map<int,Jobs> listings={};
+  Future<void> doList() async{
+    listings=await getListings();
     print(listings);
-    print("fourth");
     setState(() {});
-    print("fifth");
   }
 
   initState() {
-    print("first");
     doList();
-    print("sixth");
+    // print(EtherAmount.inWei(BigInt.from(2)));
   }
 
   @override
@@ -64,8 +59,8 @@ class _ListingPageState extends State<ListingPage> {
                     ],
                   ),
                 ),
-                for (int i = 0; i < listings.length; i++)
-                  JobListCard(job: listings[i])
+                for (MapEntry<int, Jobs> entry in listings.entries)
+                  JobListCard(jobId: entry.key,job: entry.value)
               ],
             ),
           ),
@@ -99,19 +94,19 @@ class _ListingPageState extends State<ListingPage> {
 // }
 class JobListCard extends StatelessWidget {
   final Jobs job;
-  const JobListCard({super.key, required this.job});
+  final int jobId;
+  const JobListCard({super.key, required this.jobId, required this.job});
 
   @override
   Widget build(BuildContext context) {
     print("building");
     return Card(
-      color: Colors.transparent,
       child: Column(
         children: [
-          Text(job.desc, style: TextStyle(fontSize: 20.0)),
-          Text(job.category, style: TextStyle(fontSize: 20.0)),
-          Text(job.deadline, style: TextStyle(fontSize: 20.0)),
-          Text(job.amount.toString(), style: TextStyle(fontSize: 20.0)),
+          Text(job.desc),
+          Text(job.category),
+          Text(job.deadline),
+          Text(job.amount.toString()),
           ElevatedButton(
             onPressed: () {},
             child: const Text("Select Job"),

@@ -16,11 +16,11 @@ late Web3Client ethClient;
 late Ethereum eth;
 late List<dynamic> credentials;
 late Contract contractAbi;
-final String contractAddress="0x3E16f5385E2A89F89652dB49630338491C5346c5";
+final String contractAddress="0x45f05E6d01fF56bE322a332D9b6c9f0DcAd944D8";
 final String blockchainUrl = "https://rpc.open-campus-codex.gelato.digital/";
 late Stream<JobPosted> posts;
-List<Jobs> clientJobs=[];
-List<Jobs> workerJobs=[];
+Map<int,Jobs> clientJobs= {};
+Map<int,Jobs> workerJobs= {};
 // late FirebaseFirestore db;
 
 Future<void> init_metamask() async{
@@ -36,33 +36,43 @@ Future<void> init_metamask() async{
 }
 Future<void> getClientJobs() async{
   print(credentials[0].address);
-  clientJobs=[];
-  await contractAbi.getClientJobs(credentials[0].address).then((value) => value.forEach((element) {clientJobs.add(Jobs(element));}));
-  // print(haha[0].runtimeType);
-  clientJobs.forEach((element) {print((element.toMap()));});
+  clientJobs.clear();
+  List<BigInt> temp= await contractAbi.getClientJobs(credentials[0].address);
+  for (BigInt jobId in temp){
+    clientJobs[jobId.toInt()]=(Jobs(await contractAbi.getJob(jobId)));
+  }
+  print("client: $clientJobs");
   print("done");
 }
 Future<void> getWorkerJobs() async{
-  workerJobs= [];
-  await contractAbi.getWorkerJobs(credentials[0].address).then((value) =>  value.forEach((element) {workerJobs.add(Jobs(element));}));
-  workerJobs.forEach((element) {print((element.toMap()));});
+  workerJobs.clear();
+  List<BigInt> temp= await contractAbi.getWorkerJobs(credentials[0].address);
+  for (BigInt jobId in temp){
+    workerJobs[jobId.toInt()]=(Jobs(await contractAbi.getJob(jobId)));
+  }
+  print("worker: $workerJobs");
   print("done");
 }
 void getPersonalJobs(){
   getClientJobs();
   getWorkerJobs();
 }
-Future<List<Jobs>> getListings() async{
+Future<Map<int,Jobs>> getListings() async{
   print('inside1');
-  List<Jobs> listings=[];
+  Map<int,Jobs> listings={};
   print("inside2");
-  await contractAbi.getListing().then((value) => value.forEach((element) {listings.add(Jobs(element));}));
+  List<BigInt> temp= await contractAbi.getListing();
+  for (BigInt jobId in temp){
+    listings[jobId.toInt()]=(Jobs(await contractAbi.getJob(jobId)));
+  }
+  print(listings);
   return listings;
 }
 
 Future<int> postJob(String desc, String category, String delivery, int amt) async{  //Client posts Job
   int jobId=UniqueKey().hashCode;
-  await contractAbi.postJob(BigInt.from(amt), credentials[0].address, BigInt.from(jobId), desc, category, delivery, credentials: credentials[0]);
+  await contractAbi.postJob(BigInt.from(amt), credentials[0].address, BigInt.from(jobId), desc, category, delivery,
+      credentials: credentials[0]);
   print("hi");
   getPersonalJobs();
   return jobId;
@@ -72,11 +82,11 @@ Future<void> acceptJob(int jobId) async{                 //Client accepts Worker
   getPersonalJobs();
 }
 Future<void> completeJob(int jobId) async{                 //Worker approves Job
-  await contractAbi.completeJob(BigInt.from(jobId), credentials[0].address, credentials: credentials[0]);
+  await contractAbi.completeJob(BigInt.from(jobId), credentials: credentials[0]);
   getPersonalJobs();
 }
 Future<void> approveJob(int jobId) async{                 //Client approves Job
-  await contractAbi.approveJob(BigInt.from(jobId), credentials[0].address, credentials: credentials[0]);
+  await contractAbi.approveJob(BigInt.from(jobId), credentials: credentials[0]);
   getPersonalJobs();
 }
 Future<void> getJob(int jobId) async{
